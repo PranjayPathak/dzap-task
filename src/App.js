@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import React, { useCallback, useState } from 'react';
+import TextEditor from './components/TextEditor';
 
 function App() {
+  const [input, setInput] = useState('');
+  const [addressList, setAddressList] = useState([]);
+  const onInputChange = useCallback((value, viewUpdate) => {
+    setInput(value);
+
+    console.log(value.split(/\n/));
+    setAddressList(value.split(/\n/));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <TextEditor input={input} onInputChange={onInputChange} />
     </div>
   );
 }
