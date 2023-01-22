@@ -7,10 +7,12 @@ import { ERROR, DIVIDERS } from './constants/constants'
 
 
 function App() {
-  const [addressList, setAddressList] = useState([]);
-  const [input, setInput] = useState('0x2CB99F193549681e06C6770dDD5543812B4FaFE8 10\n0xEb0D38c92deB969b689acA94D962A07515CC5204 10\n0xF4aDE8368DDd835B70b625CF7E3E1Bc5791D18C1 10\n0x09ae5A64465c18718a46b3aD946270BD3E5e6aaB 10\n0x8B3392483BA26D65E331dB86D4F430E9B3814E5e 10');
   const [errorList, setErrorList] = useState([]);
   const [success, setSuccess] = useState(false);
+  const [input, setInput] = useState('0x2CB99F193549681e06C6770dDD5543812B4FaFE8 10\n0xEb0D38c92deB969b689acA94D962A07515CC5204 10\n0xF4aDE8368DDd835B70b625CF7E3E1Bc5791D18C1 10\n0x09ae5A64465c18718a46b3aD946270BD3E5e6aaB 10\n0x8B3392483BA26D65E331dB86D4F430E9B3814E5e 10');
+  const [addressList, setAddressList] = useState([]); //Filtered Input 
+  // Structure of addressList = { address1/key : [{index : i , amount:x}, {index : j , amount:y}] }
+
 
 
   const combineBalances = () => {
@@ -26,11 +28,11 @@ function App() {
     });
 
     Object.entries(newAddressList).forEach(([address, val]) => {
-      newInput += `${address}=${val[0].amount}\n`
+      newInput += `${address} ${val[0].amount}\n`
     })
 
     setAddressList(newAddressList)
-    setInput(newInput)
+    setInput(newInput.trimEnd('\n'))
   }
 
 
@@ -40,32 +42,34 @@ function App() {
     Object.entries(addressList).forEach(([address, val]) => {
       if (val.length > 1) {
         newAddressList[address] = addressList[address].slice(0, 2)
-        // newInput += `${address}=${val[0].amount}\n`
       }
     })
 
     Object.entries(newAddressList).forEach(([address, val]) => {
-      newInput += `${address}=${val[0].amount}\n`
+      newInput += `${address} ${val[0].amount}\n`
     })
 
     setAddressList(newAddressList)
-    setInput(newInput)
+    setInput(newInput.trimEnd('\n'))
   }
 
-
+  // On Submit
   const onSubmit = () => {
-    // Reset Error
-    setErrorList([]);
-    let errList = [], adrList = {}
+    setErrorList([]); // Reset error list
 
+    let errList = [], inputDataObject = {};
+
+    // Filter Input
     input.split(/\n/).forEach((item, idx) => {
 
+      // Split address and amount
       DIVIDERS.forEach((el) => {
         if (item.includes(el)) {
           item = item.split(el)
         }
       })
 
+      // Identify syntax errors
       if (item.length !== 2) {
         errList.push({
           type: ERROR.INVALID_INPUT,
@@ -78,26 +82,32 @@ function App() {
         })
       }
 
-      if (!adrList[item[0]]?.length) {
-        adrList[item[0]] = [{ amount: item[1], idx: idx }]
+      // Update address/amount object using address as key
+      if (!inputDataObject[item[0]]?.length) {
+        inputDataObject[item[0]] = [{ amount: item[1], idx: idx }]
       } else {
-        adrList[item[0]].push({ amount: item[1], idx: idx })
+        inputDataObject[item[0]].push({ amount: item[1], idx: idx })
       }
     })
 
+
+
+    // Throw error, in case of syntax error
     if (errList.length) {
       setErrorList(errList)
       return
     }
 
 
-    // if inputs are valid, then check for dublicates
-    console.log(adrList);
-    setAddressList(adrList)
+    // If inputs are valid, then check for duplicates/logical errors
+    setAddressList(inputDataObject);
 
-    Object.entries(adrList).forEach(([address, val]) => {
-      if (val.length > 1) {
-        let idxList = val.map(obj => {
+    // check for duplicates in inputDataObject
+    Object.entries(inputDataObject).forEach(([address, data]) => {
+      if (data.length > 1) {
+
+        // List of duplicate indexes
+        let idxList = data.map(obj => {
           return obj.idx
         })
 
@@ -111,18 +121,23 @@ function App() {
 
 
     if (errList.length) {
+      // Throw error if duplicate are present
+
       setErrorList(errList)
       return
     } else {
+      // Else return success
       setSuccess(true)
     }
 
   }
 
-  const onInputChange = useCallback((value, viewUpdate) => {
-    setErrorList([]);
+  // On text editor input
+  const onInputChange = (value) => {
+    if (success) setSuccess(false);
+    if (errorList.length != 0) setErrorList([]);
     setInput(value);
-  }, []);
+  }
 
   return (
     <div className="App">
@@ -130,6 +145,7 @@ function App() {
       <TextEditor input={input} onChange={onInputChange} />
       <h2 className='heading'>Seperated by {DIVIDERS.map((el, i) => `'${el}' ${i !== DIVIDERS.length - 1 ? 'or ' : ''}`)}</h2>
       <div className='alert-container'>
+        {success && <div className='success-message'><span className='success-message__icon'>&#10003;</span> Successfully Submitted!</div>}
         {errorList.length > 0 && <Alert errorList={errorList} combineBalances={combineBalances} keepFirstOne={keepFirstOne} />}
       </div>
       <button className='btn' onClick={onSubmit}>NEXT</button>

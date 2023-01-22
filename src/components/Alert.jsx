@@ -1,13 +1,15 @@
 import React from 'react'
 import { ERROR, DIVIDERS } from '../constants/constants'
-// import { ERROR } from '../constants.js'
 
 
+// Error box
 const ErrorContainer = ({ children }) => {
   return <div className='error-container'>
     <span className='error-container__icon'>&#9888;</span><div className='error-container__message'>{children}</div>
   </div>
 }
+
+// Component for error handling
 function Alert({ errorList, combineBalances, keepFirstOne }) {
 
   if (errorList[0].type == ERROR.DUPLICATE_ADDRESS) {
@@ -16,10 +18,10 @@ function Alert({ errorList, combineBalances, keepFirstOne }) {
         <div className='duplication-error'>
           <span> Duplicated</span>
           <div>
-            <span className='duplication-error__links' onClick={keepFirstOne}>Keep the first one</span> 
+            <span className='duplication-error__links' onClick={keepFirstOne}>Keep the first one</span>
             <span className='divid'>|</span>
             <span className='duplication-error__links' onClick={combineBalances}>Combine Balance</span>
-            </div>
+          </div>
         </div>
         <ErrorContainer>
           {errorList.map((err, idx) => {

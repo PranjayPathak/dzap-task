@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { githubLight, githubLightInit, githubDark, githubDarkInit } from '@uiw/codemirror-theme-github';
+import { githubLight, githubLightInit } from '@uiw/codemirror-theme-github';
 
 function TextEditor({ input, onChange }) {
 
