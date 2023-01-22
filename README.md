@@ -1,5 +1,5 @@
 <h1 align="center">DZAP Task 👨🏼‍💻</h1>
- Disperse Component : [https://dzap-task-pranjaypathak.vercel.app](https://dzap-task-pranjaypathak.vercel.app/)
+ Disperse Component : https://dzap-task-pranjaypathak.vercel.app/
 
 ### 🌐 Technologies Used
 ```
