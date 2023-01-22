@@ -1,0 +1,89 @@
+$primary-blue: #1F389D;
+$primary-backgound: #F5F6FA;
+$font-primary: #757A8A;
+$alert-error: #ff4d4f;
+
+.App {
+    padding: 2rem;
+}
+
+.heading {
+    font-size: medium;
+    font-weight: 500;
+    color: $font-primary;
+}
+
+.btn {
+    padding: 1.1rem 0;
+    width: 100%;
+    background-color: lighten($color: $primary-blue, $amount: 10);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+
+    &:hover {
+        background-color: lighten($color: $primary-blue, $amount: 6);
+    }
+
+    &:active {
+        background-color: lighten($color: $primary-blue, $amount: 12)
+    }
+
+    ;
+}
+
+
+
+.cm-editor {
+    padding: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    outline: none !important;
+}
+
+.alert-container {
+    min-height: 7rem;
+}
+
+.duplication-error {
+    display: flex;
+    color: $alert-error;
+    align-items: center;
+    justify-content: space-between;
+
+    &__links {
+        cursor: pointer;
+        border-bottom: 2px solid $alert-error;
+    }
+
+    .divid {
+        margin: 0 1rem;
+    }
+}
+
+.error-container {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    color: $alert-error;
+    border: 2px solid $alert-error;
+    margin: 1rem 0;
+    padding:1rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+
+    &__icon {
+        font-size: 2rem;
+    }
+
+    &__message {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+}
