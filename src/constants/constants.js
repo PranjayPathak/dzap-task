@@ -4,5 +4,5 @@ export const ERROR = {
     DUPLICATE_ADDRESS: 'Duplicate address'
 }
 
-export const DIVIDERS = [' ', ',', '=']
+export const DIVIDERS = [',', ' ', '=']
 
