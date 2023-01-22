@@ -11,49 +11,57 @@ function Disperse() {
   // Structure of addressList = { address1/key : [{index : i , amount:x}, {index : j , amount:y}] }
 
 
-
+  /// Combine duplicate balances
   const combineBalances = () => {
     let newAddressList = { ...addressList }, newInput = '';
     Object.entries(addressList).forEach(([address, val]) => {
       if (val.length > 1) {
+        //combined balance
         let combBalance = val.reduce((acc, obj) => {
           return Number(obj.amount) + acc;
         }, 0);
         let newIdx = val[0].idx;
+
+        // Update value for the address
         newAddressList[address] = [{ amount: combBalance, idx: newIdx }]
       }
     });
 
+    // Convert from new address list to input string.
     Object.entries(newAddressList).forEach(([address, val]) => {
       newInput += `${address} ${val[0].amount}\n`
     })
 
+    // Update state of editor
     setAddressList(newAddressList)
     setInput(newInput.trimEnd('\n'))
   }
 
 
+  /// TO keep first of the duplicate values
   const keepFirstOne = () => {
     let newAddressList = { ...addressList }, newInput = '';
-
     Object.entries(addressList).forEach(([address, val]) => {
       if (val.length > 1) {
-        newAddressList[address] = addressList[address].slice(0, 2)
+        // Slice duplicates
+        newAddressList[address] = addressList[address].slice(0, 2); // Slce duplicates
       }
     })
 
+    // Convert from new address list to input string
     Object.entries(newAddressList).forEach(([address, val]) => {
       newInput += `${address} ${val[0].amount}\n`
     })
 
+    // Update state of editor
     setAddressList(newAddressList)
     setInput(newInput.trimEnd('\n'))
   }
 
-  // On Submit
+
+  /// On Submit
   const onSubmit = () => {
     setErrorList([]); // Reset error list
-
     let errList = [], inputDataObject = {};
 
     // Filter Input
@@ -87,18 +95,14 @@ function Disperse() {
       }
     })
 
-
-
     // Throw error, in case of syntax error
     if (errList.length) {
       setErrorList(errList)
       return
     }
 
-
     // If inputs are valid, then check for duplicates/logical errors
     setAddressList(inputDataObject);
-
     // check for duplicates in inputDataObject
     Object.entries(inputDataObject).forEach(([address, data]) => {
       if (data.length > 1) {
@@ -125,7 +129,6 @@ function Disperse() {
       // Else return success
       setSuccess(true)
     }
-
   }
 
   // On text editor input
