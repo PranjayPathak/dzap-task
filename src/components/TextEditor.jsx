@@ -15,8 +15,8 @@ function TextEditor({ input, onChange }) {
                     foreground: '#000',
                     // caret: '#F5F6FA',
                     // selection: '#F5F6FA',
-                    selectionMatch: '#F5F6FA',
-                    lineHighlight: '#F5F6FA',
+                    // selectionMatch: '#F5F6FA',
+                    // lineHighlight: '#F5F6FA',
                     gutterBackground: '#F5F6FA',
                     gutterForeground: '#adadad',
                 }

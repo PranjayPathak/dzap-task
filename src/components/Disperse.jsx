@@ -68,15 +68,14 @@ function Disperse() {
     // Filter Input
     input.split(/\n/).forEach((item, idx) => {
 
+      // Identify dividers in the input
+      let matchedDivider = DIVIDERS.filter(key => item.includes(key))
+      
       // Split address and amount
-      DIVIDERS.forEach((el) => {
-        if (item.includes(el)) {
-          item = item.split(el)
-        }
-      })
+      item = item.split(matchedDivider[0])
 
       // Identify syntax errors
-      if (item.length !== 2) {
+      if (matchedDivider.length !== 1 || item.length !== 2) {
         errList.push({
           type: ERROR.INVALID_INPUT,
           index: idx
