@@ -1,5 +1,5 @@
 import React from 'react'
-import { ERROR, DIVIDERS } from '../constants/constants'
+import { ERROR } from '../constants/constants'
 
 
 // Error box
@@ -12,7 +12,7 @@ const ErrorContainer = ({ children }) => {
 // Component for error handling
 function Alert({ errorList, combineBalances, keepFirstOne }) {
 
-  if (errorList[0].type == ERROR.DUPLICATE_ADDRESS) {
+  if (errorList[0].type === ERROR.DUPLICATE_ADDRESS) {
     return (
       <>
         <div className='duplication-error'>

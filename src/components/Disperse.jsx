@@ -11,9 +11,21 @@ function Disperse() {
   // Structure of addressList = { address1/key : [{index : i , amount:x}, {index : j , amount:y}] }
 
 
+  /// Convert from new address list to input string.
+  const objToInput = (newAddressList) => {
+    let newInput = '';
+    Object.entries(newAddressList).forEach(([address, val]) => {
+      newInput += `${address} ${val[0].amount}\n`
+    })
+
+    // Update state of editor
+    setAddressList(newAddressList)
+    setInput(newInput.trimEnd('\n'))
+  }
+
   /// Combine duplicate balances
   const combineBalances = () => {
-    let newAddressList = { ...addressList }, newInput = '';
+    let newAddressList = { ...addressList };
     Object.entries(addressList).forEach(([address, val]) => {
       if (val.length > 1) {
         //combined balance
@@ -27,20 +39,15 @@ function Disperse() {
       }
     });
 
-    // Convert from new address list to input string.
-    Object.entries(newAddressList).forEach(([address, val]) => {
-      newInput += `${address} ${val[0].amount}\n`
-    })
 
-    // Update state of editor
-    setAddressList(newAddressList)
-    setInput(newInput.trimEnd('\n'))
+    // Convert from new address list to input string.
+    objToInput(newAddressList);
   }
 
 
   /// TO keep first of the duplicate values
   const keepFirstOne = () => {
-    let newAddressList = { ...addressList }, newInput = '';
+    let newAddressList = { ...addressList };
     Object.entries(addressList).forEach(([address, val]) => {
       if (val.length > 1) {
         // Slice duplicates
@@ -49,13 +56,7 @@ function Disperse() {
     })
 
     // Convert from new address list to input string
-    Object.entries(newAddressList).forEach(([address, val]) => {
-      newInput += `${address} ${val[0].amount}\n`
-    })
-
-    // Update state of editor
-    setAddressList(newAddressList)
-    setInput(newInput.trimEnd('\n'))
+    objToInput(newAddressList);
   }
 
 
@@ -134,7 +135,7 @@ function Disperse() {
   // On text editor input
   const onInputChange = (value) => {
     if (success) setSuccess(false);
-    if (errorList.length != 0) setErrorList([]);
+    if (errorList.length !== 0) setErrorList([]);
     setInput(value);
   }
 

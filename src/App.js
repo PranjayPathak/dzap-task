@@ -1,5 +1,5 @@
 import './App.scss';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import Disperse from './components/Disperse';
 
 
